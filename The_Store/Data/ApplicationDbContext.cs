@@ -17,5 +17,7 @@ namespace The_Store.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<Order> Orders { get; set; }
     }
 }

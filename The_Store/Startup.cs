@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
+using The_Store.Business;
 using The_Store.Data;
+using The_Store.Interfaces;
 using The_Store.Models;
 
 namespace The_Store
@@ -54,6 +56,8 @@ namespace The_Store
                 .AddIdentityServerJwt();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddScoped<IOrderBusiness, OrderBusiness>();
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

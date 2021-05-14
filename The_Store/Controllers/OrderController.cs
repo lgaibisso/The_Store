@@ -20,6 +20,7 @@ namespace The_Store.Controllers
         }
 
         [HttpGet]
+        [Route("api/[controller]/GetOrdersList")]
         public JsonResult GetOrders()
         {
             var operationOut = new GetOrderListOut();
@@ -35,12 +36,13 @@ namespace The_Store.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetOrder(Order o)
+        [Route("api/[controller]/GetOrderById")]
+        public JsonResult GetOrderById(int id)
         {
             var operationOut = new GetOrderByIdOut();
             try
             {
-                var operationIn = new GetOrderByIdIn { OrderId = o.Id };
+                var operationIn = new GetOrderByIdIn { OrderId = id };
                 operationOut = _context.GetOrderById(operationIn);
                 if (!operationOut.OperationResultSuccess) throw CreateApiError(operationOut);
 
@@ -50,7 +52,7 @@ namespace The_Store.Controllers
         }
 
         [HttpPost]
-        public JsonResult InsertOrder(Order o)
+        public JsonResult CreatetOrder(Order o)
         {
             var operationOut = new CreateOrderOut();
             try

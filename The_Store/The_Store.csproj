@@ -13,7 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.15" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.15" />
@@ -36,6 +35,22 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20210513135232_Initialize.cs" />
     <Compile Remove="Data\Migrations\20210513135232_Initialize.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PlacetoPay.Integrations.Library.CSharp">
+      <HintPath>Resources\version_2018_07_16\Release\PlacetoPay.Integrations.Library.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>Resources\version_2018_07_16\Release\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SoapHttpClient">
+      <HintPath>Resources\version_2018_07_16\Release\SoapHttpClient.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

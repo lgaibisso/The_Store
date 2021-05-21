@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using The_Store.Enums;
 
 namespace The_Store.Models
 {
@@ -15,15 +16,8 @@ namespace The_Store.Models
 
         [StringLength(40)]
         public string Customer_mobile { get; set; }
-        public Status Status { get; set; }
+        public OrderStatus Status { get; set; }
         public DateTime Created_at { get; set; }
         public DateTime Updated_at { get; set; }
-    }
-
-    public enum Status
-    {
-        CREATED,
-        PAYED,
-        REJECTED
     }
 }

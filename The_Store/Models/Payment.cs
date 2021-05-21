@@ -1,10 +1,8 @@
 ﻿using The_Store.Enums;
-using The_Store.Messengers.Base;
-using The_Store.Models;
 
-namespace The_Store.OperationMessengers.Orders
+namespace The_Store.Models
 {
-    public class UpdateOrderIn : BaseOperationIn
+    public class Payment
     {
         public int OrderId { get; set; }
 

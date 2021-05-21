@@ -34,6 +34,6 @@ namespace The_Store.Interfaces
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        UpdateOrderOut UpdateOrder(UpdateOrderIn request);
+        Task<UpdateOrderOut> UpdateOrderAsync(UpdateOrderIn request);
     }
 }

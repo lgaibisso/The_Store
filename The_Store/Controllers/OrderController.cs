@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using System;
-using The_Store.Controllers.Common;
+using System.Threading.Tasks;
+using The_Store.Enums;
 using The_Store.Interfaces;
 using The_Store.Models;
 using The_Store.OperationMessengers.Orders;
@@ -10,7 +10,7 @@ namespace The_Store.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : BaseApiController
+    public class OrderController : ControllerBase
     {
         private readonly IOrderBusiness _context;
 
@@ -19,8 +19,25 @@ namespace The_Store.Controllers
             _context = context;
         }
 
+        //[HttpPost]
+        //[Route("PayOrder")]
+        //public JsonResult PayOrder(Order id, string creditCardNumber, CreditCard type)
+        //{
+        //    if (id != null || !string.IsNullOrEmpty(creditCardNumber))
+        //    {
+        //        try
+        //        {
+        //            var paymentResult = new Authentication("6dd490faf9cb87a9862245da41170ff2", "024h1IlD");
+        //            return new JsonResult(paymentResult);
+        //        }
+        //        catch (Exception) { return new JsonResult("Error"); }
+        //    }
+            
+        //    return new JsonResult("Error");
+        //}
+
         [HttpGet]
-        [Route("api/[controller]/GetOrdersList")]
+        [Route("GetOrders")]
         public JsonResult GetOrders()
         {
             var operationOut = new GetOrderListOut();
@@ -28,57 +45,79 @@ namespace The_Store.Controllers
             {
                 var operationIn = new GetOrderListIn();
                 operationOut = _context.GetOrderList(operationIn);
-                if (!operationOut.OperationResultSuccess) throw CreateApiError(operationOut);
+                if (!operationOut.OperationResultSuccess) return new JsonResult("Error");
 
-                return new JsonResult(operationOut);
+                return new JsonResult(operationOut.Orders);
             }
-            catch (Exception e) { throw e; }
+            catch (Exception) { return new JsonResult("Error"); }
         }
 
         [HttpGet]
-        [Route("api/[controller]/GetOrderById")]
+        [Route("GetOrderById/{id}")]
         public JsonResult GetOrderById(int id)
         {
-            var operationOut = new GetOrderByIdOut();
-            try
+            if (id > 0)
             {
-                var operationIn = new GetOrderByIdIn { OrderId = id };
-                operationOut = _context.GetOrderById(operationIn);
-                if (!operationOut.OperationResultSuccess) throw CreateApiError(operationOut);
+                var operationOut = new GetOrderByIdOut();
+                try
+                {
+                    var operationIn = new GetOrderByIdIn { OrderId = id };
+                    operationOut = _context.GetOrderById(operationIn);
+                    if (!operationOut.OperationResultSuccess) return new JsonResult("Error");
 
-                return new JsonResult(operationOut);
+                    return new JsonResult(operationOut.Order);
+                }
+                catch (Exception) { return new JsonResult("Error"); }
             }
-            catch (Exception e) { throw e; }
+            
+            return new JsonResult("Error");
         }
 
         [HttpPost]
-        public JsonResult CreatetOrder(Order o)
+        [Route("CreateOrder")]
+        public JsonResult CreateOrder(Order o)
         {
-            var operationOut = new CreateOrderOut();
-            try
+            if (o != null)
             {
-                var operationIn = new CreateOrderIn { Order = o };
-                operationOut = _context.CreateOrder(operationIn);
-                if (!operationOut.OperationResultSuccess) throw CreateApiError(operationOut);
+                var operationOut = new CreateOrderOut();
+                try
+                {
+                    var operationIn = new CreateOrderIn { Order = o };
+                    operationOut = _context.CreateOrder(operationIn);
+                    if (!operationOut.OperationResultSuccess) return new JsonResult("Error");
 
-                return new JsonResult(operationOut.NewOrder);
+                    return new JsonResult(operationOut.OperationResultSuccess);
+                }
+                catch (Exception) { return new JsonResult("Error"); }
             }
-            catch (Exception e) { throw e; }
+
+            return new JsonResult("Error");
         }
 
-        [HttpPut]
-        public JsonResult UpdateOrder(Order o)
+        [HttpPost]
+        [Route("UpdateOrder")]
+        public async Task<JsonResult> UpdateOrder(Payment payment) //Order o, string creditCardNumber, CreditCard type)
         {
-            var operationOut = new UpdateOrderOut();
-            try
+            if (payment != null)
             {
-                var operationIn = new UpdateOrderIn { Order = o };
-                operationOut = _context.UpdateOrder(operationIn);
-                if (!operationOut.OperationResultSuccess) throw CreateApiError(operationOut);
+                var operationOut = new UpdateOrderOut();
+                try
+                {
+                    var operationIn = new UpdateOrderIn
+                    {
+                        OrderId = payment.OrderId,
+                        CreditCardNumber = payment.CreditCardNumber,
+                        CreditCardType = payment.CreditCardType
+                    };
+                    operationOut = await _context.UpdateOrderAsync(operationIn);
+                    if (!operationOut.OperationResultSuccess) return new JsonResult("Error");
 
-                return new JsonResult(operationOut.NewOrder);
+                    return new JsonResult(operationOut.NewOrder);
+                }
+                catch (Exception) { return new JsonResult("Error"); }
             }
-            catch (Exception e) { throw e; }
+            
+            return new JsonResult("Error");
         }
     }
 }

@@ -11,11 +11,11 @@ readonly APIUrl = 'https://localhost:5001';
 constructor(private http:HttpClient) { }
 
 getOrdersList():Observable<any[]>{
-  return this.http.get<any>(this.APIUrl + '/GetOrders');
+  return this.http.get<any>(this.APIUrl + 'api/Order/GetOrdersList');
 }
 
 createOrder(val:any){
-  return this.http.post(this.APIUrl + '/CreateOrder', val);
+  return this.http.post(this.APIUrl + '/CreatetOrder', val);
 }
 
 updateOrder(val:any){

@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using The_Store.Models;
+using The_Store.Enums;
+
 
 namespace The_Store.Data
 {
@@ -29,7 +28,7 @@ namespace The_Store.Data
                 .Property(p => p.Status)
                 .HasConversion(
                     v => v.ToString(),
-                    v => (Status)Enum.Parse(typeof(Status), v));
+                    v => (OrderStatus)Enum.Parse(typeof(OrderStatus), v));
         }
     }
 }
